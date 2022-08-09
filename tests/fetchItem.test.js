@@ -19,6 +19,6 @@ describe('2 - Teste a função fetchItem', () => {
     expect(result).toEqual(item);
   });
   it('returns an error if the function is empty', async () => {
-    await expect(async () => await fetchItem()).toThrow(new Error('You must provide an url'));
+    expect(await fetchItem()).toEqual(new Error('You must provide an url'));
   });
 });

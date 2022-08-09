@@ -19,5 +19,6 @@ describe('1 - Teste a função fetchProducts', () => {
   });
   it('returns an error if the function is empty', async () => {
     expect(await fetchProducts()).toEqual( new Error('You must provide an url'));
+    // expect(await fetchProducts()).rejects.toEqual(new Error('You must provide an url'));
   })
 });
