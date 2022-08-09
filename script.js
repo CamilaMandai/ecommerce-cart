@@ -24,10 +24,21 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 
+const listProducts = async () => {
+  const result = await fetchProducts('computador');
+  const itemsSection = document.getElementsByClassName('items')[0];
+  result.forEach((element) => {
+    const { id: sku, title: name, thumbnail: image } = element;
+    const productElements = createProductItemElement({ sku, name, image });
+    itemsSection.appendChild(productElements);
+  });
+};
+
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const cartItemClickListener = (event) => {
-  // coloque seu código aqui
+   const item = event.target;
+   item.remove();
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
@@ -40,12 +51,14 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 
 const cartItems = document.getElementsByClassName('cart__items')[0];
 
+const fetchById = (id) => fetchItem(id);
+
 const addItem = () => {
   const buttons = document.getElementsByClassName('item__add');
   for (let i = 0; i < buttons.length; i += 1) {
     const itemId = buttons[i].parentElement.firstChild.innerText;
     buttons[i].addEventListener('click', async () => {
-      const results = await fetchItem(itemId);
+      const results = await fetchById(itemId);
       const { id: sku, title: name, price: salePrice } = results;
       const productCart = createCartItemElement({ sku, name, salePrice });
       cartItems.appendChild(productCart);
@@ -53,23 +66,7 @@ const addItem = () => {
   }
 };
 
-const listProducts = async () => {
-  const result = await fetchProducts('computador');
-  const itemsSection = document.getElementsByClassName('items')[0];
-  result.forEach((element) => {
-    const { id: sku, title: name, thumbnail: image } = element;
-    const productElements = createProductItemElement({ sku, name, image });
-    itemsSection.appendChild(productElements);
-  });
+window.onload = async () => {
+  await listProducts();
   addItem();
 };
-
-window.onload = listProducts;
-
-// window.addEventListener('load', function() {
-//   listProducts();
-// });
-
-// window.addEventListener('load', function() {
-//  addItem();
-// });
