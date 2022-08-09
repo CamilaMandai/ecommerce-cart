@@ -15,9 +15,9 @@ describe('1 - Teste a função fetchProducts', () => {
     expect(fetch).toHaveBeenCalledWith('https://api.mercadolibre.com/sites/MLB/search?q=computador');
   });
   it('returns the object computadorSearch', async () => {
-    expect(await fetchProducts('computador')).toEqual(computadorSearch);
+    expect(await fetchProducts('computador')).toEqual(computadorSearch.results);
   });
   it('returns an error if the function is empty', async () => {
-    await expect(async () => await fetchProducts()).toThrow(new Error('You must provide an url'));
+    expect(await fetchProducts()).toEqual( new Error('You must provide an url'));
   })
 });
