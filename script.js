@@ -24,21 +24,6 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 
-const listProducts = async () => {
-  const result = await fetchProducts('computador');
-  const itemsSection = document.getElementsByClassName('items')[0];
-  result.forEach((element) => {
-    const { id: sku, title: name, thumbnail: image } = element;
-    const product = {
-      sku,
-      name,
-      image,
-    };
-    const productElements = createProductItemElement(product);
-    itemsSection.appendChild(productElements);
-  });
-};
-
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const cartItemClickListener = (event) => {
@@ -53,29 +38,38 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
-const buttons = document.getElementsByClassName('item__add');
 const cartItems = document.getElementsByClassName('cart__items')[0];
 
 const addItem = () => {
-for (let i = 0; i < buttons.length; i += 1) {
-  const itemId = button.parentNode.firstChild.innerText;
-  buttons[i].addEventListener('click', async function () {
-    const results = await fetchItem(itemId);
-    // console.log(itemId);
-    const { id: sku, title: name, price: salePrice } = results;
-    const product = {
-      sku,
-      name,
-      salePrice,
-    };
-    const productCart = createCartItemElement(product);
-    cartItems.appendChild(productCart);
-  });
-}
+  const buttons = document.getElementsByClassName('item__add');
+  for (let i = 0; i < buttons.length; i += 1) {
+    const itemId = buttons[i].parentElement.firstChild.innerText;
+    buttons[i].addEventListener('click', async () => {
+      const results = await fetchItem(itemId);
+      const { id: sku, title: name, price: salePrice } = results;
+      const productCart = createCartItemElement({ sku, name, salePrice });
+      cartItems.appendChild(productCart);
+    });
+  }
 };
 
-window.onload = () => {
-  console.log('hello');
+const listProducts = async () => {
+  const result = await fetchProducts('computador');
+  const itemsSection = document.getElementsByClassName('items')[0];
+  result.forEach((element) => {
+    const { id: sku, title: name, thumbnail: image } = element;
+    const productElements = createProductItemElement({ sku, name, image });
+    itemsSection.appendChild(productElements);
+  });
   addItem();
-  listProducts();
 };
+
+window.onload = listProducts;
+
+// window.addEventListener('load', function() {
+//   listProducts();
+// });
+
+// window.addEventListener('load', function() {
+//  addItem();
+// });
