@@ -58,8 +58,27 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 
+const loadingProduct = (n) => {
+  const itemsSection = document.getElementsByClassName('items')[0];
+  for (let times = 0; times < n; times += 1) {
+  const section = document.createElement('section');
+  section.className = 'item';
+  section.appendChild(createCustomElement('span', 'loading', 'carregando...'));
+  itemsSection.append(section);
+  }
+};
+
+const endLoadingProduct = () => {
+  const itemsSection = document.getElementsByClassName('items')[0];
+  while (itemsSection.firstChild) {
+    itemsSection.removeChild(itemsSection.firstChild);
+  }
+};
+
 const listProducts = async () => {
+  loadingProduct(8);
   const result = await fetchProducts('computador');
+  endLoadingProduct();
   const itemsSection = document.getElementsByClassName('items')[0];
   result.forEach((element) => {
     const { id: sku, title: name, thumbnail: image } = element;
