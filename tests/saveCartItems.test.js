@@ -10,6 +10,6 @@ describe('3 - Teste a função saveCartItems', () => {
   });
   it('call the function "localStorage.setItem" with particular argument values', () => {
     saveCartItems('<ol><li>Item</li></ol>');
-    expect(localStorage.setItem).toHaveBeenCalledWith('cartItems', '<ol><li>Item</li></ol>');
+    expect(localStorage.setItem).toHaveBeenCalledWith('cartItems', JSON.stringify('<ol><li>Item</li></ol>'));
   });  
 });
