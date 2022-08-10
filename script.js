@@ -64,6 +64,7 @@ const addItem = () => {
       cartItems.appendChild(productCart);
     });
   }
+  // localStorage.setItem('productCart', JSON.stringfy(results));
 };
 
 window.onload = async () => {
