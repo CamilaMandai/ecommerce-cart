@@ -4,19 +4,20 @@ const emptyCart = document.querySelector('.empty-cart');
 const totalPrice = document.querySelector('.total-price');
 
 const calculaTotal = async () => {
-    let total = 0;
+    // let total = 0;
     const items = JSON.parse(getSavedCartItems('cartItems'));
-    // const total = items.reduce( async (acc, curr) => {
-    //   const {sku} = curr;
-    //   const item = await fetchItem(sku);
-    //   console.log(acc + item.price)
-    //   return acc + item.price;
-    // })
-    for (let index = 0; index < items.length; index += 1) {
-      const { sku } = items[index];
+    const total = await items.reduce(async (acc, curr) => { // https://zellwk.com/blog/async-await-in-loops/
+      const { sku } = curr;
       const item = await fetchItem(sku);
-      total += item.price;
-    }
+      const sum = await acc;
+      return sum + item.price;
+    }, 0);
+    // for (let index = 0; index < items.length; index += 1) {
+    //   const { sku } = items[index];
+    //   // const item = await fetchItem(sku);
+    //   const item = await fetchItem(sku);
+    //     total += item.price;
+    // }
     totalPrice.innerText = `${total}`;
   };
 
