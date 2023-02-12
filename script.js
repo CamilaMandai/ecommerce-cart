@@ -2,23 +2,22 @@ let savedItems = JSON.parse(getSavedCartItems('cartItems'));
 const cartItems = document.getElementsByClassName('cart__items')[0];
 const emptyCart = document.querySelector('.empty-cart');
 const totalPrice = document.querySelector('.total-price');
+const emptyMessage = document.querySelector('.empty-message');
 
 const calculaTotal = async () => {
-    // let total = 0;
     const items = JSON.parse(getSavedCartItems('cartItems'));
-    const total = await items.reduce(async (acc, curr) => { // https://zellwk.com/blog/async-await-in-loops/
+    const total = await items.reduce(async (acc, curr) => { 
       const { sku } = curr;
       const item = await fetchItem(sku);
       const sum = await acc;
       return sum + item.price;
     }, 0);
-    // for (let index = 0; index < items.length; index += 1) {
-    //   const { sku } = items[index];
-    //   // const item = await fetchItem(sku);
-    //   const item = await fetchItem(sku);
-    //     total += item.price;
-    // }
-    totalPrice.innerText = `${total}`;
+    
+    totalPrice.innerText = total !== 0 && `Total: R$${total}`;
+
+    if (total !== 0) {
+      emptyCart.style.display = 'block';
+    } 
   };
 
 const clearAll = () => {
@@ -27,7 +26,8 @@ const clearAll = () => {
   while (cartItems.firstChild) {
     cartItems.removeChild(cartItems.firstChild);
   }
-  totalPrice.innerText = 0;
+  totalPrice.innerText = '';
+  emptyCart.style.display = 'none';
 };
 
 emptyCart.addEventListener('click', clearAll);
@@ -108,7 +108,8 @@ const cartItemClickListener = async (event) => {
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.innerHTML = `<p>código: ${sku} </p><p><span class="bold">Produto:</span> `
+  + `${name}</p> <p><span class="bold">Preço:</span> R$${salePrice}</p>`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
@@ -124,7 +125,6 @@ const pushAndSaveItem = (item) => {
 const addItem = async () => {
   const buttons = document.getElementsByClassName('item__add');
   for (let i = 0; i < buttons.length; i += 1) {
-    // savedItems = JSON.parse(getSavedCartItems('cartItems'));
     const itemId = buttons[i].parentElement.firstChild.innerText;
     buttons[i].addEventListener('click', async () => {
       const results = await fetchById(itemId);

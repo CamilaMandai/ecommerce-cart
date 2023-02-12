@@ -127,17 +127,31 @@ body {
   color: white;
 }
 
+.item__add:hover{
+  background-color: rgb(67, 87, 160);
+}
+
 .cart {
   display: flex;
   flex-basis: 32%;
   flex-flow: column wrap;
   background-color: rgb(241, 241, 238);
   height: 100vh;
+  padding-top: 30px;
+  padding-left: 20px;
 }
 
 .cart .cart__items {
   height: 500px;
   overflow-y: scroll;
+}
+
+.cart__item{
+  margin-bottom: 30px;
+}
+
+.bold {
+ font-weight: bold;
 }
 
 .empty-cart {
@@ -146,4 +160,16 @@ body {
   margin: 0 auto;
   border: 2px solid rgb(5, 52, 219);
   background-color: rgb(249, 249, 246);
+  display: none;
 }
+
+.empty-cart:hover {
+  background-color: rgb(5, 52, 219);
+  color:  rgb(249, 249, 246);
+  cursor: pointer;
+}
+
+.total-price {
+  padding: 30px;
+}
+
